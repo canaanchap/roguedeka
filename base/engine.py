@@ -1,4 +1,4 @@
-import tcod as libtcod
+import libtcodpy as libtcod
 
 from entity import Entity
 from input_handlers import handle_keys
@@ -23,7 +23,7 @@ def main():
 
     libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
 
-    libtcod.console_init_root(screen_width, screen_height, 'Roguedeka', False)
+    libtcod.console_init_root(screen_width, screen_height, 'libtcod tutorial revised', False)
 
     con = libtcod.console_new(screen_width, screen_height)
 
@@ -36,14 +36,12 @@ def main():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
 
         render_all(con, entities, game_map, screen_width, screen_height, colors)
-        libtcod.console_set_default_foreground(0, libtcod.white)
-        libtcod.console_put_char(0, player.x, player.y, '@', libtcod.BKGND_NONE)
+
         libtcod.console_flush()
 
         clear_all(con, entities)
 
         action = handle_keys(key)
-        libtcod.console_put_char(con, player.x, player.y, '@', libtcod.BKGND_NONE)
 
         move = action.get('move')
         exit = action.get('exit')
@@ -51,7 +49,9 @@ def main():
 
         if move:
             dx, dy = move
-            player.move(dx, dy)
+
+            if not game_map.is_blocked(player.x + dx, player.y + dy):
+                player.move(dx, dy)
 
         if exit:
             return True
@@ -59,9 +59,6 @@ def main():
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
-        if key.vk == libtcod.KEY_ESCAPE:
-            return True
-
 
 if __name__ == '__main__':
-    main()
+     main()
