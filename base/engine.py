@@ -44,8 +44,6 @@ def main():
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
 
-        key = libtcod.console_check_for_keypress()
-
         if key.vk == libtcod.KEY_ESCAPE:
             return True
 
